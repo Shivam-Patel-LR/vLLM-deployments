@@ -1,6 +1,6 @@
 services:
   vllm-gen:
-    image: vllm/vllm-openai:latest
+    build: .                      # builds from the Dockerfile above
     runtime: nvidia
     deploy:
       resources:
@@ -11,36 +11,13 @@ services:
               capabilities: [gpu]
     volumes:
       - ~/.cache:/.cache/
+    env_file: ".env"
     restart: unless-stopped
     ports:
       - "8000:8000"
     ipc: host
-    command: ["--model", "/.cache/Qwen2.5-Coder-32B-Instruct-Q6_K.gguf", '--tokenizer', 'Qwen/Qwen2.5-Coder-32B-Instruct', '--gpu-memory-utilization', '0.95', '--dtype', 'auto', '--max-model-len', '8192']
-    # command: ["microsoft/phi-4", '--dtype', 'auto', '--gpu-memory-utilization', '0.90', '--max-model-len', '8192'] 
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/v1/models"]
       interval: 30s
       retries: 5
       start_period: 240s
-
-  vllm-embed:
-    image: vllm/vllm-openai:latest
-    runtime: nvidia
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
-    volumes:
-      - ~/.cache/huggingface:/root/.cache/huggingface
-    ports:
-      - "8001:8000"
-    ipc: host
-    command: ["--model", "microsoft/graphcodebert-base", '--dtype', 'auto', '--gpu-memory-utilization', '0.05']
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/v1/models"]
-      interval: 20s
-      retries: 5
-      start_period: 180s
