@@ -1,0 +1,15 @@
+gpu-memory-utilization: 0.90
+dtype: "auto"
+tensor-parallel-size: 2
+quantization: "awq_marlin"
+chat-template:"./chat_template.jinja"
+max-model-len: 114688
+rope-scaling: "{\"rope_type\":\"yarn\",\"factor\":3.5,\"original_max_position_embeddings\":32768}"
+max-seq-len-to-capture: 16384
+enable-chunked-prefill: true
+enable-prefix-caching: true 
+tool-call-parser: "hermes"
+enable-auto-tool-choice: true
+reasoning-parser: "deepseek_r1"
+disable-log-stats: false
+# served-model-name: "vital-ai/watt-tool-70B-awq"

@@ -2,6 +2,8 @@ services:
   vllm-gen:
     build: .                      # builds from the Dockerfile above
     runtime: nvidia
+    ipc: host
+    # shm_size: 16gb
     deploy:
       resources:
         reservations:
@@ -15,7 +17,6 @@ services:
     restart: unless-stopped
     ports:
       - "8000:8000"
-    ipc: host
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/v1/models"]
       interval: 30s
