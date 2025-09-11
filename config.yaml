@@ -1,6 +1,6 @@
 gpu-memory-utilization: 0.95
 dtype: "auto"
-pipeline-parallel-size: 2
+# pipeline-parallel-size: 2
 # quantization: "awq"
 # chat-template:"./chat_template.jinja"
 max-num-seqs: 4
