@@ -1,16 +1,18 @@
 gpu-memory-utilization: 0.95
 dtype: "auto"
-tensor-parallel-size: 2
+pipeline-parallel-size: 2
 # quantization: "awq"
 # chat-template:"./chat_template.jinja"
 max-num-seqs: 4
-max-model-len: 128000
+max-model-len: 42000
 # rope-scaling: "{\"rope_type\":\"yarn\",\"factor\":4.0,\"original_max_position_embeddings\":32768}"
 # max-seq-len-to-capture: 16384
 max-seq-len-to-capture: 8192
 enable-chunked-prefill: true
 enable-prefix-caching: true 
 tool-call-parser: "hermes"
+guided-decoding-backend: 'xgrammar'
+guided-decoding-disable-any-whitespace: true
 enable-auto-tool-choice: true
 # reasoning-parser: "qwen3"
 trust_remote_code: true
