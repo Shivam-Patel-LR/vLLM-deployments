@@ -1,9 +1,9 @@
 services:
   vllm-gen:
-    build: .                      # builds from the Dockerfile above
+    build: .
     runtime: nvidia
     ipc: host
-    # shm_size: 16gb
+    shm_size: 16g
     deploy:
       resources:
         reservations:
@@ -12,8 +12,8 @@ services:
               count: all
               capabilities: [gpu]
     volumes:
-      - ~/.cache:/.cache/
-    env_file: ".env"
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    env_file: "../.env"
     restart: unless-stopped
     ports:
       - "8000:8000"
@@ -21,4 +21,4 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:8000/v1/models"]
       interval: 30s
       retries: 5
-      start_period: 240s
+      start_period: 900s

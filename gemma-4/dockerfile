@@ -1,0 +1,11 @@
+FROM vllm/vllm-openai:gemma4
+
+ENV PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+
+WORKDIR /app
+
+COPY ./config.yaml /app/config.yaml
+
+EXPOSE 8000
+
+ENTRYPOINT ["vllm", "serve", "google/gemma-4-31B-it", "--config", "/app/config.yaml"]
