@@ -1,0 +1,8 @@
+served-model-name: "Qwen/Qwen3-VL-Reranker-2B"
+runner: "pooling"
+dtype: "bfloat16"
+trust-remote-code: true
+max-model-len: 32768
+gpu-memory-utilization: 0.9
+hf-overrides: '{"architectures": ["Qwen3VLForSequenceClassification"], "classifier_from_token": ["no", "yes"], "is_original_qwen3_reranker": true}'
+mm-processor-cache-type: "shm"

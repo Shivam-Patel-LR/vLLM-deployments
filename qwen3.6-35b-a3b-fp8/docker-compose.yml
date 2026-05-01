@@ -1,0 +1,27 @@
+services:
+  vllm-qwen:
+    image: vllm/vllm-openai:v0.19.0
+    runtime: nvidia
+    ipc: host
+    shm_size: 32g
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+      - ./config.yaml:/app/config.yaml:ro
+    env_file: "../.env"
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    entrypoint:
+      ["vllm", "serve", "Qwen/Qwen3.6-35B-A3B-FP8", "--config", "/app/config.yaml"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/v1/models"]
+      interval: 30s
+      retries: 10
+      start_period: 1200s
