@@ -1,0 +1,33 @@
+services:
+  vllm-qwen3-vl-rerank:
+    image: vllm/vllm-openai:v0.20.0
+    runtime: nvidia
+    ipc: host
+    shm_size: 16g
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["1"]
+              capabilities: [gpu]
+    volumes:
+      - ~/.cache/huggingface:/workspace/hf
+      - ./config.yaml:/app/config.yaml:ro
+      - ./start.sh:/app/start.sh:ro
+    env_file: "../.env"
+    environment:
+      MODEL_ID: Qwen/Qwen3-VL-Reranker-2B
+      MODEL_REVISION: main
+      CHAT_TEMPLATE_NAME: reranker
+      HF_HOME: /workspace/hf
+      HF_HUB_CACHE: /workspace/hf/hub
+    restart: unless-stopped
+    ports:
+      - "8002:8000"
+    entrypoint: ["/bin/sh", "/app/start.sh"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/v1/models"]
+      interval: 30s
+      retries: 10
+      start_period: 600s
