@@ -1,5 +1,5 @@
 services:
-  vllm-gen:
+  vllm-mineru:
     build: .
     runtime: nvidia
     ipc: host
@@ -20,5 +20,5 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/v1/models"]
       interval: 30s
-      retries: 5
+      retries: 10
       start_period: 900s

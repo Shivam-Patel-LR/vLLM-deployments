@@ -1,0 +1,17 @@
+served-model-name: "MinerU2.5-Pro-2604-1.2B"
+# Checkpoint omits the top-level tie_word_embeddings flag (only nested in
+# text_config); without this override vLLM unties the head and emits garbage.
+hf-overrides: '{"tie_word_embeddings": true}'
+# Colon form: vLLM splits module:class. Provided by mineru-vl-utils (baked in).
+logits-processors:
+  - "mineru_vl_utils:MinerULogitsProcessor"
+# One full 1.2B replica per GPU (do NOT tensor-parallel); scales ~linearly.
+data-parallel-size: 2
+max-num-batched-tokens: 16384
+# MinerU sends one image, never video.
+limit-mm-per-prompt: '{"image": 1, "video": 0}'
+# Renderer thread pool (tokenize + chat-template + image preprocess). Defaults
+# to 1, which starves the GPU; requires mm-processor-cache-gb 0 (not threadsafe).
+renderer-num-workers: 16
+mm-processor-cache-gb: 0
+gpu-memory-utilization: 0.9
