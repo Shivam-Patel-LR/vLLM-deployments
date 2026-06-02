@@ -1,6 +1,6 @@
 services:
   vllm-qwen3-vl-rerank:
-    image: vllm/vllm-openai:v0.20.0
+    image: vllm/vllm-openai:v0.21.0
     runtime: nvidia
     ipc: host
     shm_size: 16g
