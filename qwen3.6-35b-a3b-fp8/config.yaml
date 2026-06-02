@@ -8,3 +8,5 @@ enable-auto-tool-choice: true
 tool-call-parser: "qwen3_coder"
 mm-processor-cache-type: "shm"
 trust-remote-code: true
+speculative-config: '{"method": "mtp", "num_speculative_tokens": 4}'
+enable-prefix-caching: true
