@@ -1,6 +1,6 @@
 services:
-  vllm-deepseek-ocr:
-    image: vllm/vllm-openai:v0.19.0
+  vllm-mineru:
+    build: .
     runtime: nvidia
     ipc: host
     shm_size: 16g
@@ -9,17 +9,14 @@ services:
         reservations:
           devices:
             - driver: nvidia
-              device_ids: ["0"]
+              count: all
               capabilities: [gpu]
     volumes:
       - ~/.cache/huggingface:/root/.cache/huggingface
-      - ./config.yaml:/app/config.yaml:ro
     env_file: "../.env"
     restart: unless-stopped
     ports:
       - "8000:8000"
-    entrypoint:
-      ["vllm", "serve", "deepseek-ai/DeepSeek-OCR", "--config", "/app/config.yaml"]
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/v1/models"]
       interval: 30s

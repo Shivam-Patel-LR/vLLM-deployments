@@ -1,9 +1,0 @@
-served-model-name: "deepseek-ai/DeepSeek-OCR"
-logits-processors:
-  - "vllm.model_executor.models.deepseek_ocr:NGramPerReqLogitsProcessor"
-no-enable-prefix-caching: true
-mm-processor-cache-gb: 0
-mm-processor-kwargs: '{"max_crops": 9, "min_crops": 2}'
-max-num-seqs: 100
-gpu-memory-utilization: 0.9
-trust-remote-code: true

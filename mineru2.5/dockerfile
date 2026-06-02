@@ -1,0 +1,14 @@
+FROM vllm/vllm-openai:v0.21.0
+
+# MinerU's two-step extractor ships the model's logits processor and renderer
+# helpers in mineru-vl-utils; the stock vLLM image lacks it. Bake it in so the
+# container starts clean (no per-boot pip install).
+RUN pip install --no-cache-dir "mineru-vl-utils[vllm]"
+
+WORKDIR /app
+
+COPY ./config.yaml /app/config.yaml
+
+EXPOSE 8000
+
+ENTRYPOINT ["vllm", "serve", "opendatalab/MinerU2.5-Pro-2604-1.2B", "--config", "/app/config.yaml"]
